@@ -63,7 +63,8 @@ execute "install-apache-server" do
   apt-get -yq update
   apt-get -yq install apache2 libapache2-mod-php5 php5-uuid php5 php5-cli \
     php5-curl php5-xsl php5-xdebug git-core nfs-common build-essential \
-    autoconf php-pear liblua5.1-dev liblua5.1 lua5.1 lua5.1-dev libpcre3-dev
+    autoconf php-pear liblua5.1-dev liblua5.1 lua5.1 lua5.1-dev libpcre3-dev \
+    php5-mysql php5-mcrypt php5-pgsql php5-gmp
   EOD
 end
 

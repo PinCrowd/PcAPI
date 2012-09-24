@@ -29,12 +29,13 @@ end
 #end
 
 
-execute "install-pecl-weakref" do
-  command <<-EOF
-      pecl install --force --onlyreqdeps weakref
-      echo 'extension=weakref.so' > /etc/php5/conf.d/weakref.ini
-  EOF
-end
+
+#execute "install-pecl-weakref" do
+#  command <<-EOF
+#      pecl install --force --onlyreqdeps weakref
+#      echo 'extension=weakref.so' > /etc/php5/conf.d/weakref.ini
+#  EOF
+#end
 
 execute "pear-install" do
   command <<-EOF
@@ -105,3 +106,9 @@ package "ant" do
   action :install
 end
 
+execute "setup-zfc-db" do
+  command <<-EOF
+    mysql -u root -e "create database zfc"
+    mysql zfc -u root < /vagrant/vendor/zf-commons/zfc-user/data/schema.sql
+  EOF
+end

@@ -13,17 +13,32 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
 
+/**
+ * @property $request \Zend\Http\Request
+ */
 class IndexController extends AbstractActionController
 {
     public function indexAction()
     {
 
-        $model =  new JsonModel();
-        if(($jsonp = $this->request->getQuery('jsonp')) || ($jsonp =  $this->request->getPost('jsonp'))){
-            $model->setJsonpCallback($jsonp);
+        /* @var \Zend\Http\Request $request */
+        $request = $this->request;
+        $header = $request->getHeader('Accept')->getFieldValue();
+        if (strstr($header, 'application/json')
+            || strstr($header, 'application/javascript')
+        ) {
+            $model = new JsonModel();
+            if (($jsonp = $request->getQuery('jsonp'))
+                || ($jsonp = $request->getPost('jsonp'))
+            ) {
+                $model->setJsonpCallback($jsonp);
+            }
+        } else {
+            $model = new ViewModel();
         }
         $model->date = date(DATE_ATOM);
         $model->string = 'test string';
+        $model->accept = $request->getHeader('Accept')->toString();
         return $model;
     }
 }
